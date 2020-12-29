@@ -25,3 +25,46 @@ where &_v_coluna = &_id;
 select nm_departamento, &_v_nm_departamento, &&_v_id_departamento
 from tb_departamento 
 where &&_v_id_departamento between 30 and 50;
+
+-- DEFINE define a variavel antes mesmo de chamala 
+
+DEFINE v_id = 300 
+
+select nome, id_empregado 
+from tb_empregado 
+where &v_id = all(100,200,288);
+
+-- ACEEPT define a varivel com nome, tipo, formato, hide(oculto ou nao), prompt
+
+ACCEPT v_id NUMBER FORMAT 99 PROMPT 'Entre com ID';
+
+-- UNDEFINE remove a variavel; 
+
+DEFINE v_id_dept = 10;
+
+select d.nm_departamento, e.nome, e.salario 
+from tb_empregado e 
+inner join tb_departamento d using(id_departamento)
+where id_departamento = &v_id_dept;
+
+UNDEFINE v_id_dept;
+
+
+-- CRIAR UM SCRIPT PARA RELATORIOS ROBUSTOS 
+
+-- criado script Script_1.sql
+
+--invocando script: 
+
+@ \home\oracle\Script_1.sql
+
+@ \home\oracle\Script_2.sql
+
+@ \home\oracle\Script_3.sql
+
+-- Passando como paremtro o conteudo da variavel 
+
+@ \home\oracle\Script_4.sql 10; -- retorno o departamento com id 10
+
+@ \home\oracle\Script_5.sql 180 4000;
+
