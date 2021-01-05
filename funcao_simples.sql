@@ -114,3 +114,58 @@ WHERE to_char(substr(endereco, instr(endereco, '9702'),4)) = to_char('9702');
 SELECT endereco, '9702' as numero
 FROM tb_localizacao
 WHERE endereco like '%9702%'
+
+
+
+--==================================================================================
+--------------- FUNÇOES NUMERICAS
+
+--ABS valor absoluto 
+
+SELECT percentual_comissao, percentual_comissao - 30,  abs(percentual_comissao - 30) absoluto
+FROM tb_empregado 
+WHERE percentual_comissao  is not null
+
+--CEIL(x) menor inteiro maior (arredonda para cima)
+
+SELECT CEIL(5.8), CEIL(5.2), CEIL(-5.2)
+FROM dual;
+
+--FLOOR(x) maior inteiro menor (arredonda para baixo)
+
+SELECT FLOOR(22.9), FLOOR(7.6), FLOOR(- 5.2)
+FROM dual;
+
+--MOD(x, y) resto da divisao 
+
+SELECT MOD(8,3), MOD(27,3)
+FROM dual;
+
+--POWER(x, y) potenciaçao potencia
+
+SELECT POWER(2,2), POWER(3,4)
+FROM dual;
+
+--round(x) arredonda o numero para o mais proximo, 
+--round(x,1) arredonda 1 casa  decimal 5,75 - 5,8
+--round(x, -1) 5,75 - 10 
+--round(x,2) demias numeros casas a considerar apos a virgula
+SELECT round(3.5666), round(3.5666, 1), round(3.5666, -1), round(7.5666, -1), round(3.6666, 2),round(3.444, 2)
+FROM dual;
+
+-- SING(x) retorna -1 se negativo 1 positivo e 0 se for zero
+
+SELECT SIGN(33), SIGN(-33), SIGN(0)
+FROM dual;
+
+-- SQRT raiz quadrada 
+SELECT SQRT(25), SQRT(5), ROUND(SQRT(5), 2), substr(to_char(SQRT(5)),1,4)
+FROM dual;
+
+-- TRUNC o truncamento é a limitação do número de dígitos à direita da vírgula decimal.
+
+SELECT TRUNC(5,75), TRUNC(5.75,1), TRUNC(SQRT(5),2) truncamento, SQRT(5), ROUND(SQRT(5),2) arredondamento
+FROM dual;
+
+
+
