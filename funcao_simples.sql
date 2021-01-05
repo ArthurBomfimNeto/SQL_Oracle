@@ -75,14 +75,42 @@ FROM dual;
 
 --NVL substitui valores nulos por string
 
-SELECT nvl(percentual_comissao, 'TESTE')
+SELECT nvl(to_char(percentual_comissao), 'TESTE')
 FROM tb_empregado
 WHERE percentual_comissao is null;
 
+-- NVL2 caso tenha algo na coluna retorna primeira expressao se nao retorna a segunda
+
+SELECT rpad(id_gerente,15,' ') as id_gerente, rpad(nvl2(id_gerente, 'Contem gerente', 'Nao ha gerencia '),30, '.') as NVL2
+FROM tb_departamento;
+
+--REPLACE (x,string_busca, string_substitutiva) procura por uma string caso ache substitui por outra
+
+SELECT id_funcao, REPLACE(ds_funcao, 'Marketing', 'MARKETING')
+FROM tb_funcao
+WHERE ds_funcao like '%Marketing%'
+order by 2 asc;
+
+--SONDEX(x) busca pela fon'etica da coluna 
+
+SELECT ds_funcao,nome
+FROM tb_funcao 
+inner join tb_empregado using(id_funcao)
+WHERE soundex(ds_funcao) = soundex('President') or 
+      soundex(nome) = soundex('KEvyn')
 
 
+--SUBSTR(x,inicio,(comprimento)) corte de string com inicio e comprimento opcional
 
+SELECT substr('Teste de corte da funçao SBSTR',26)
+FROM dual; 
 
+-- encotrou o endereço com o numero 9702 usando o corte 
+SELECT endereco, substr(endereco, instr(endereco, '9702'),4), length(substr(endereco, instr(endereco, '9702'),4)) as length
+FROM tb_localizacao
+WHERE to_char(substr(endereco, instr(endereco, '9702'),4)) = to_char('9702');
 
-
-
+-- encotrou o endereço com o numero 9702 usando o like 
+SELECT endereco, '9702' as numero
+FROM tb_localizacao
+WHERE endereco like '%9702%'
