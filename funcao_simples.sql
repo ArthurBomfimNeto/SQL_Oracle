@@ -286,3 +286,19 @@ FROM dual;
 
 SELECT TO_NUMBER('-$12,345.67', '$99,999.99')
 FROM dual;
+
+----------------------CAST(x AS tipo)
+-- converte o dado em um tipo de dado especifico 
+
+SELECT 
+    CAST(12345.67 as varchar2(10)),
+    CAST('9A4F' as RAW(2)),
+    CAST('01-DEZ-2007' as DATE),
+    CAST(12345.678 as NUMBER(10,2))
+FROM dual;   
+
+SELECT 
+      CAST(salario as varchar(10)),
+      CAST(salario + 245.755 as number(8,2))
+FROM tb_empregado
+WHERE id_empregado = 100;
