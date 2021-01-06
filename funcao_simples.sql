@@ -273,3 +273,12 @@ SELECT ROWNUM,id_empregado,
 FROM tb_empregado;
 
 
+----========================= TO_NUMBER(x) ==================================
+
+SELECT TO_NUMBER('970,66')
+FROM dual; 
+
+
+-- SOMA COM NUMERO
+SELECT TO_NUMBER('888,55') + 33.33
+FROM dual;
