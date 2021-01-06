@@ -272,7 +272,6 @@ SELECT ROWNUM,id_empregado,
       length('O empregado recebe por mes:'|| TO_CHAR(salario,'L99,999.99')) tamanho
 FROM tb_empregado;
 
-
 ----========================= TO_NUMBER(x) ==================================
 
 SELECT TO_NUMBER('970,66')
@@ -281,4 +280,9 @@ FROM dual;
 
 -- SOMA COM NUMERO
 SELECT TO_NUMBER('888,55') + 33.33
+FROM dual;
+
+-- Format number usando $
+
+SELECT TO_NUMBER('-$12,345.67', '$99,999.99')
 FROM dual;
