@@ -302,3 +302,52 @@ SELECT
       CAST(salario + 245.755 as number(8,2))
 FROM tb_empregado
 WHERE id_empregado = 100;
+
+--==============FUNÇOES de EXPRESSAO REGULAR===============
+
+^196[5-8]$
+
+-- ^ correspondea posiçao que a string inicializa
+--[5-8] corresponde caracteres que estejam entre 5 e 8
+-- $ corresponde a posiç~ao final da string 
+
+--REGEXP_LIKE(x,padrao,[opçao_correspondencia])
+
+--Opçao de corresponcencia 
+
+-- c : determina correspondencia com diferenciaç~ao de maisculo e minusculo 
+
+-- i : determina a correspondencia sem diferenciaçao de maisculo e munusculo 
+
+-- n : permite usar o operador de correspondencia com qualuqer caracter
+
+
+-- Resgatou os empregados que nao foram admitidos entre 1993 a 1998
+SELECT id_empregado, nome, data_admissao
+FROM tb_empregado
+WHERE NOT REGEXP_LIKE(TO_CHAR(data_admissao, 'YYYY'),'^199[3-8]$')
+
+--NUmeros de admitidos e restantes
+SELECT count(*) "ADMITIDOS 1993/8",108- count(*) RESTANTES
+FROM tb_empregado
+WHERE REGEXP_LIKE(TO_CHAR(data_admissao, 'YYYY'),'^199[3-8]$')
+
+-- Utilizando A OPACAO  "i" procura os empregado cujo nome inicia com K ou k
+
+SELECT id_empregado, nome 
+FROM tb_empregado
+WHERE REGEXP_LIKE(nome,'^K','i');
+
+-- Procura por nomes começados da letra A ou M sem distinçao
+SELECT id_empregado, nome 
+FROM tb_empregado
+WHERE REGEXP_LIKE(nome,'^[AM]','i')
+ORDER BY 2 desc
+
+
+
+-- Procura por empregados chamados Arthur ou Kevin, OR pessoas com salarios de 24000 ou 6000
+SELECT id_empregado, nome , salario
+FROM tb_empregado
+WHERE REGEXP_LIKE(nome,'(Arthur|Kevin)','i') or REGEXP_LIKE(TO_CHAR(salario), '(24000|6000)')
+ORDER BY 3 desc;
