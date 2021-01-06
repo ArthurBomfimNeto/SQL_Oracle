@@ -167,5 +167,109 @@ FROM dual;
 SELECT TRUNC(5,75), TRUNC(5.75,1), TRUNC(SQRT(5),2) truncamento, SQRT(5), ROUND(SQRT(5),2) arredondamento
 FROM dual;
 
+-- --==================================================================================
+--------------- FUNÇOES CONVERSÂO
+
+--TO_CHAR(x,FORMAT) converte x em uma string com um formato opcional 
+
+SELECT TO_CHAR(1234.56)
+FROM dual;
+
+
+--FORMAT
+SELECT TO_CHAR(12345.67,'99,999.99') as virgula,
+       TO_CHAR(12345.67,'999,999.9') as ponto
+FROM dual;
+
+SELECT TO_CHAR(12345.67, '99999.99') as ponto
+FROM dual;
+
+-- PARAMETRO 0 retorna Zero a direita e esquerda AMBOS
+
+SELECT TO_CHAR(12345.67,'099999.99') as esquerda, 
+       TO_CHAR(12345.67,'99999.990') direita,
+       TO_CHAR(12345.67,'099999.990') AMBOS
+FROM dual;
+
+-- USO SO $ 
+
+SELECT TO_CHAR(12345.67, '$99,999.99') virgula,
+       TO_CHAR(12345.67, '$99999.99') ponto, 
+       TO_CHAR(12345.67, '$99,999.9')
+FROM dual;
+
+-- USO DO B se a parte inteira do numero for zero ele substitui por espaço  
+
+SELECT TO_CHAR(00.67, 'B9.99')
+FROM dual;
+
+-- Uso do C simbolo da moeda extraido do parametro NLS_ISO_CURRENCY
+
+SELECT TO_CHAR(12345.67, 'C99,999.99')
+FROM dual;
+
+-- Uso da letra D retorna o valor de uma virgula em ponto especifico 
+
+SELECT TO_CHAR(123456.78,'999999D99')
+FROM dual;
+
+
+-- Parametro retorna utilizando notaç~ao cientifica 
+SELECT TO_CHAR(123456.78,'999999.99EEEE')
+FROM dual;
+
+-- Parametro FM remove os espaços em brancos 
+
+SELECT TO_CHAR(00123456.7800,'FM999999.99')
+FROM dual;
+
+-- Parametro L retorna o simbolo da moeda local 
+
+SELECT TO_CHAR(123456.78,'l999999.99')
+FROM dual;
+
+-- Parametro MI retorna o sinal de negativo a direita
+SELECT TO_CHAR(-123456.78,'999999.99MI'),TO_CHAR(-123456.78,'999999.99')
+FROM dual;
+
+
+
+--Parametro PR retorna para numeros negativos o mesmo entre <>
+
+SELECT TO_CHAR(-123456.78,'999999.99PR'),TO_CHAR(123456.78,'999999.99PR')
+FROM dual;
+
+
+-- PARAMETRO RN fica sosinho e retorna em romanos o numero
+SELECT TO_CHAR(2020, 'RN')
+FROM dual;
+
+-- PARAMETRO TM retorna o numero utilizando a quantidade minima de caracteres
+
+SELECT TO_CHAR(12345.67,'TM'), TO_CHAR(12345.67)
+FROM dual;
+
+--PARAMETRO S retorna o negativo a esquerda com sinal de negativo e positivo tambem 
+
+SELECT TO_CHAR(12345.67, 'S99,999.99') positivo ,
+       TO_CHAR(-12345.67, 'S99,999.99') negativo,
+       TO_CHAR(12345.67, '99,999.99S') positivo -- Com esse do outro lado inverte o lado do sinal
+FROM dual;
+
+-- retorna simbolo do euro U
+SELECT TO_CHAR(12345.67, 'U99,999.99') 
+FROM dual;
+
+--OBS retornara ##.. caso for formatado um numero contendo digitos a mais para o formato\
+
+SELECT TO_CHAR(1234589.67, 'S99,999.99') 
+FROM dual;
+
+-- Exemplo com concatenaçao 
+
+SELECT ROWNUM,id_empregado,
+       'O empregado recebe por mes:'|| TO_CHAR(salario,'L99,999.99') as salarios,
+      length('O empregado recebe por mes:'|| TO_CHAR(salario,'L99,999.99')) tamanho
+FROM tb_empregado;
 
 
