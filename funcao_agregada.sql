@@ -63,3 +63,53 @@ FROM tb_empregado;
 
 SELECT VARIANCE(salario)
 FROM tb_empregado;
+
+-======================= AGRUPANDO LINHAS ========================
+
+--GROUP BY agrupa as linhas identicas. 
+--agrupando os nomes identicos e fazendo a contagem dos memso 
+SELECT nome, count(nome)
+FROM tb_empregado
+GROUP BY nome;
+
+
+--Agrupa duas colunas mas nesse caso n~ao tira nenhum proveito 
+SELECT id_departamento, id_gerente
+FROM tb_departamento 
+GROUP BY id_departamento, id_gerente
+
+--Agrupa colunas e faz sua contagem
+
+SELECT id_localizacao, count(ROWID)
+FROM tb_departamento
+GROUP BY id_localizacao;
+
+-- Agrupando salarios iguais e fazendo media soma e variance dos mesmos
+
+SELECT salario, AVG(salario) media, SUM(salario) soma, VARIANCE(salario)
+FROM tb_empregado
+GROUP BY salario;
+
+--[ERRO] nao se pode utilizar uma funçao agregada para limitar uma clausula WHERE 
+--                           [ERRO]
+SELECT id_localizacao, avg(id_localizacao)
+FROM tb_departamento
+WHERE avg(id_localizacao) > 50
+GROUP BY id_localizacao;
+
+--HAVING utilizar o mesmo para fazer filtros com o uso do GROUP BY
+
+SELECT id_localizacao, avg(id_localizacao), SUM(id_localizacao)
+FROM tb_departamento
+GROUP BY id_localizacao
+HAVING SUM(id_localizacao) > 50.00;
+
+
+-- Utilizando WHERE e HAVING no mesmo script
+
+SELECT id_departamento, salario, sum(salario)
+FROM tb_empregado
+WHERE id_departamento = 50
+GROUP BY id_departamento, salario
+HAVING avg(salario) = salario
+order by 2;
