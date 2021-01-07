@@ -303,7 +303,7 @@ SELECT
 FROM tb_empregado
 WHERE id_empregado = 100;
 
---==============FUNÇOES de EXPRESSAO REGULAR===============
+-==============FUNÇOES de EXPRESSAO REGULAR===============
 
 ^196[5-8]$
 
@@ -311,7 +311,11 @@ WHERE id_empregado = 100;
 --[5-8] corresponde caracteres que estejam entre 5 e 8
 -- $ corresponde a posiç~ao final da string 
 
---REGEXP_LIKE(x,padrao,[opçao_correspondencia])
+--==============REGEXP_LIKE(x,padrao,[opçao_correspondencia])
+
+SELECT sobrenome
+from tb_empregado
+where REGEXP_LIKE(sobrenome, '[Bb]om', 'i') or REGEXP_LIKE(sobrenome, '[gih]$', 'i');
 
 --Opçao de corresponcencia 
 
@@ -351,3 +355,53 @@ SELECT id_empregado, nome , salario
 FROM tb_empregado
 WHERE REGEXP_LIKE(nome,'(Arthur|Kevin)','i') or REGEXP_LIKE(TO_CHAR(salario), '(24000|6000)')
 ORDER BY 3 desc;
+
+
+
+
+--=============REGEXP_INSTR(x, padrao, [inicio], [ocorrencia], [opcao de retorno],[opcao_de_correspondencia])
+
+--Procura posiçao da segunda vez em que o "e" aprece apartir da 6º casa, sem diferença de maisculo e minusculo
+
+SELECT 
+    REGEXP_INSTR('TESTE DE EXPRESSAO REGULAR', 'e',6,2,0,'i')
+FROM dual;  
+
+
+--============= REGEXP_REPLACE(x,padrao,[string_substituiçao],[inicio], [ocorrencia], [opçao_de_correspondencia])
+
+--Procura onde começa com a letra d considerando mais dois caracter alpha(letras do alfabeto) a sua frente
+
+SELECT endereco,REGEXP_REPLACE(TO_CHAR(endereco), 'd[[:alpha:]]{2}','TESTE')
+FROM tb_localizacao
+WHERE REGEXP_REPLACE(TO_CHAR(endereco), 'd[[:alpha:]]{2}','TESTE') like '%TESTE%';
+
+--============REGEXP_SUBSTR(x, padrao, inicio, ocorrencia, opcao_correspondencia)
+
+
+-- Corte começando pela letra e apos 8 casas que sejam alpha(letras)
+SELECT 
+      REGEXP_SUBSTR('TESTE DE EXPRESSAO REGULAR', 'e[[:alpha:]]{8}',1,1,'i')
+FROM dual;
+
+
+-- CORTE dos enderecos com numeros começados em 1 com tamanho de 4 digitos
+SELECT 
+      endereco,
+      REGEXP_SUBSTR(endereco, '1[[:digit:]]{3}') as "NUMERO"
+FROM tb_localizacao
+WHERE REGEXP_SUBSTR(endereco, '1[[:digit:]]{3}') > 0
+
+--=========== REGEXP_COUNT(x, padrao, inicio, opcao_correspondencia)
+
+
+--conta a quantidade de palavra que começa com "t" e possui mias 4 caracteres a frente 
+SELECT 
+      REGEXP_COUNT('teste teste teste totle expressao regular', 't[[:alpha:]]{4}')
+FROM dual;   
+
+
+--Conta as palavra que começa com a e tem 5 caractere 
+SELECT 
+     REGEXP_COUNT(nome, 'a[[:alpha:]]{5}',1,'i') as "5 caractere", nome
+FROM tb_empregado;   
