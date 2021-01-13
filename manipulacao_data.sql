@@ -37,3 +37,43 @@ SELECT to_char(SYSDATE, 'Y,YYY' ),
        to_char(SYSDATE, 'YEAR')  as "YEAR",
        to_char(SYSDATE, 'Year')  "Year"
 FROM dual;
+
+- MONTH 
+
+SELECT to_char(SYSDATE,'MM'),
+       to_char(SYSDATE, 'MONTH'),
+       to_char(SYSDATE, 'month'),
+       to_char(SYSDATE, 'MON'),
+       to_char(SYSDATE, 'Mon'),
+       to_char(SYSDATE, 'RM') ROMANOS,
+       to_char(to_date('01/fev/2020'), 'RM') ROMANOS
+FROM dual;       
+
+-- WEEK (SEMANA)
+
+SELECT to_char(SYSDATE, 'WW'),
+       to_char(SYSDATE, 'IW'),
+       to_char(SYSDATE, 'W')
+FROM dual;    
+
+-- DAY 
+
+SELECT to_char(SYSDATE,'DDD'),
+       to_char(SYSDATE, 'DD'),
+       to_char(SYSDATE, 'D'),
+       to_char(SYSDATE, 'DAY'),
+       to_char(SYSDATE, 'Day'),
+       to_char(SYSDATE, 'DY') ,
+       to_char(SYSDATE, 'Dy') ,
+        to_char(SYSDATE, 'j')
+FROM dual;        
+      
+-- HOUR  MINUTE  SECOND
+
+
+SELECT to_char(SYSDATE,'HH24')hour,
+       to_char(SYSDATE, 'HH') hour,
+       to_char(SYSDATE, 'MI') minute,
+       to_char(SYSDATE, 'SS') second,
+       to_char(SYSDATE, 'SSSSS')second
+FROM dual;       
