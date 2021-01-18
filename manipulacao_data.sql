@@ -1,3 +1,4 @@
+
 --====================== TO_DATE==================================
 
 describe tb_historico_funcao; 
@@ -155,3 +156,8 @@ from nls_session_parameters;
 alter session set nls_date_format = 'Mon/dd/yyyy';
 
 alter system set nls_date_format = 'DD/MM/YYYY';
+
+--Se utilizar YY o mesmo considera o seculo atual 
+
+SELECT to_char(to_date('Jun 03, 15', 'month dd, yy'), 'month dd, yyyy')
+FROM dual;
