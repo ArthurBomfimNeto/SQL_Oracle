@@ -161,3 +161,62 @@ alter system set nls_date_format = 'DD/MM/YYYY';
 
 SELECT to_char(to_date('Jun 03, 15', 'month dd, yy'), 'month dd, yyyy')
 FROM dual;
+
+-- Utilizar RR para considerar o ano correto, pois de 50 a 99 ele considera o ano atual menos 1 
+
+
+SELECT to_char(to_date('MAI 04, 21', 'Month dd, RR'), 'MM DD, YYYY'),
+       to_char(to_date('MAI 04, 75', 'Month dd, RR'), 'MM DD, YYYY')
+FROM dual;
+
+
+--===== ADD_MONTHS(x,y) ======
+
+--Adiciona ou subtrai meses da data 
+alter session set nls_date_format = 'Mon/dd/yyyy';
+
+SELECT ADD_MONTHS('Jul 01, 2020', 13)
+FROM dual;
+
+SELECT ADD_MONTHS('Jul 01, 2020', -13)
+FROM dual;
+
+----------------------
+
+alter session set nls_date_format = 'DD/MM/YYYY';
+--Adiciona 13 meses
+SELECT ADD_MONTHS('01/07/2021', 13)
+FROM dual;
+
+-- Subtrai 13 meses
+SELECT ADD_MONTHS('01/07/2021', -13)
+FROM dual;
+
+--======== LAST_DAY(x) Retorna o ultimo dia do mes 
+
+SELECT LAST_DAY('Fev 01, 2013')
+FROM dual;
+
+--======= MONTHS_BETWEEN(x,y) encontra os meses que estao entre duas datas 
+
+SELECT MONTHS_BETWEEN('Jan 19, 2021', 'Jan 19, 2022')
+FROM dual;
+
+
+--Utilizando o MONTHS_BETWEEN na tabela tb_historico_funcao
+SELECT TRUNC(MONTHS_BETWEEN(data_termino, data_inicio),2) "Periodo entre datas ", 
+       SUBSTR(TO_CHAR(TRUNC(MONTHS_BETWEEN(data_termino, data_inicio),2)),1,2)  as MESES,
+       SUBSTR(TO_CHAR(TRUNC(MONTHS_BETWEEN(data_termino, data_inicio),2)),4)  as DIAS 
+FROM tb_historico_funcao;
+
+--Acha a data mais proxima do dia da semana sendo 
+-- 1  Monday – Segunda-feira,
+-- 2  Tuesday – Terça-feira,
+-- 3  Wednesday – Quarta-feira,
+-- 4  Thursday – Quinta-feira,
+-- 5  Friday – Sexta-feira,
+-- 6  Saturday – Sábado,
+-- 7  Sunday – Domingo.
+
+SELECT NEXT_DAY('Jan 19, 2021', 1)
+FROM dual;
