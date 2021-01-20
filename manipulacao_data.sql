@@ -155,11 +155,12 @@ from nls_session_parameters;
 --altera para utilizar na sessao 
 alter session set nls_date_format = 'Mon/dd/yyyy';
 
-alter system set nls_date_format = 'DD/MM/YYYY';
+alter session set nls_date_format = 'DD/MM/YYYY';
 
 --Se utilizar YY o mesmo considera o seculo atual 
 
-SELECT to_char(to_date('Jun 03, 15', 'month dd, yy'), 'month dd, yyyy')
+SELECT to_char(to_date('Jun 03, 15', 'month dd, yy'), 'month dd, yyyy'),
+      to_char(to_date('Jun 03, 75', 'month dd, yy'), 'month dd, yyyy')
 FROM dual;
 
 -- Utilizar RR para considerar o ano correto, pois de 50 a 99 ele considera o ano atual menos 1 
@@ -220,3 +221,42 @@ FROM tb_historico_funcao;
 
 SELECT NEXT_DAY('Jan 19, 2021', 1)
 FROM dual;
+
+alter session set nls_date_format = 'mon/dd/yyyy';
+
+--ROUND(x, unidade) arredonda dia mes ano hora
+
+--Arredondamento para o dia do ano mais proximo
+SELECT ROUND(to_date('jul 03,2021'), 'yyyy') ANO
+FROM dual;
+
+--Arredondamento para o dia do mes mais proximo 
+
+SELECT ROUND(to_date('jan 22,2020'),'mm') MES
+FROM dual;
+
+-- Arredondamento da hora mais proxima
+
+SELECT TO_CHAR(ROUND(to_date('Jul 02,2020 19:44:22', 'MONTH DD, YYYY HH24:MI:SS'), 'HH24'),'MONTH DD, YYYY HH24:MI:SS')
+FROM dual;
+
+-- Arredondamento do minuto mais proximo
+
+SELECT TO_CHAR(ROUND(to_date('Jul 02,2020 19:44:22', 'MONTH DD, YYYY HH24:MI:SS'), 'MI'),'MONTH DD, YYYY HH24:MI:SS')
+FROM dual;
+
+--SYSDATE data atual
+
+SELECT to_date(SYSDATE)
+FROM dual;
+
+--EXTRACT 
+
+SELECT EXTRACT(YEAR FROM SYSDATE) ANO,
+       EXTRACT(MONTH FROM TO_DATE('jan 09, 2020')) MES,
+       EXTRACT(DAY FROM SYSDATE) DIA,
+       EXTRACT(HOUR FROM TO_TIMESTAMP('jan 03, 2010 14:33:33', 'month dd, yyyy HH24:MI:SS')) HORA,
+       EXTRACT(MINUTE FROM TO_TIMESTAMP('jan 03, 2010 14:33:33', 'month dd, yy HH24:MI:SS')) MINUTOS,
+       EXTRACT(MINUTE FROm TO_TIMESTAMP('Jul 03, 2010 14:33:33', 'month dd, yy HH24:MI:SS')) SEGUNDOS
+from dual;
+
