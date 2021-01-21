@@ -71,4 +71,41 @@ SELECT  empregado.id_funcao,f.ds_funcao, empregado.CONTADOR
 FROM tb_funcao f , (SELECT id_funcao, count(id_funcao) CONTADOR
                   FROM tb_empregado
                   GROUP BY id_funcao) empregado
-WHERE f.id_funcao = empregado.id_funcao;   
+WHERE f.id_funcao = empregado.id_funcao;   ~
+
+
+--================== SUBCONSULTAS DE VARIAS LINHAS =====================
+
+-- E utilizado para consultas de diversas linhas os operadores IN ANY ALL para tratamentos
+
+SELECT id_departamento, nm_departamento
+FROM tb_departamento
+WHERE id_departamento IN (10,30,40);
+
+
+-- Verifica se ha na listas da subconsultas id iguais, pois a mesma retorno so empregados que começam com a letra A
+SELECT id_empregado, nome
+FROM tb_empregado 
+WHERE id_empregado IN (SELECT id_empregado 
+                       FROM tb_empregado
+                       WHERE nome like 'A%');
+
+
+-- Usando o NOT IN para voltar os ids que n~ao estao presente na lista da sunconsulta. 
+
+-- retorna as localizacao que n~ao contem nenhum departamento 
+
+SELECT id_localizacao, endereco 
+FROM tb_localizacao
+WHERE id_localizacao NOT IN (SELECT id_localizacao
+                             FROM tb_departamento);
+                             
+describe tb_historico_funcao; 
+
+describe tb_empregado;
+
+
+SELECT nome, sobrenome
+FROM tb_empregado 
+WHERE data_admissao > ANY (SELECT data_termino
+                           FROM tb_historico_funcao);
