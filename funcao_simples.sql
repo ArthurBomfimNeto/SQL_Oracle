@@ -404,4 +404,4 @@ FROM dual;
 --Conta as palavra que começa com a e tem 5 caractere 
 SELECT 
      REGEXP_COUNT(nome, 'a[[:alpha:]]{5}',1,'i') as "5 caractere", nome
-FROM tb_empregado;   
+FROM tb_empregado;     
