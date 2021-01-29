@@ -33,16 +33,16 @@ GROUP BY id_funcao;
 
 -- HAVING
 -- Filtra onde a media de salario deve ser menor que a m'axima das medias 
-SELECT id_funcao, avg(salario)
-FROM tb_empregado
-GROUP BY id_funcao
-HAVING avg(salario) < (SELECT MAX(AVG(salario))
-                       FROM tb_empregado
-                       GROUP BY id_funcao)
-ORDER BY 2 desc; 
+      SELECT id_funcao, avg(salario)
+      FROM tb_empregado
+      GROUP BY id_funcao
+      HAVING avg(salario) < (SELECT MAX(AVG(salario))
+                        FROM tb_empregado
+                        GROUP BY id_funcao)
+      ORDER BY 2 desc; 
 
---FROM INLINE
---Nao pode ter order by na subconsulta
+      --FROM INLINE
+      --Nao pode ter order by na subconsulta
 
 SELECT id_departamento 
 FROM (SELECT id_departamento
@@ -100,6 +100,7 @@ FROM tb_localizacao
 WHERE id_localizacao NOT IN (SELECT id_localizacao
                              FROM tb_departamento);
                              
+                             
 describe tb_historico_funcao; 
 
 describe tb_empregado;
@@ -109,3 +110,17 @@ SELECT nome, sobrenome
 FROM tb_empregado 
 WHERE data_admissao > ANY (SELECT data_termino
                            FROM tb_historico_funcao);
+ 
+ 
+SELECT id_departamento, nm_departamento
+FROM tb_departamento 
+WHERE id_departamento NOT IN (SELECT nvl(id_departamento, '120')
+                              FROM tb_empregado)
+ORDER BY 1     
+
+SELECT id_empregado, nome, salario, nm_departamento
+FROm tb_empregado e
+INNER JOIN tb_departamento d ON (e.id_departamento = d.id_departamento)
+WHERE (nvl(d.id_departamento,'0'),salario) IN (SELECT nvl(id_departamento, '0'), MIN(salario)
+                                    FROM tb_empregado
+                                    GROUP BY id_departamento);
