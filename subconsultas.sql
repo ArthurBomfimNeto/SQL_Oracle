@@ -124,3 +124,8 @@ INNER JOIN tb_departamento d ON (e.id_departamento = d.id_departamento)
 WHERE (nvl(d.id_departamento,'0'),salario) IN (SELECT nvl(id_departamento, '0'), MIN(salario)
                                     FROM tb_empregado
                                     GROUP BY id_departamento);
+
+
+--================== SUBCONSULTAS CORRELACIONADAS ================================
+
+
