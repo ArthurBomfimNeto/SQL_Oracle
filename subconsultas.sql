@@ -128,4 +128,41 @@ WHERE (nvl(d.id_departamento,'0'),salario) IN (SELECT nvl(id_departamento, '0'),
 
 --================== SUBCONSULTAS CORRELACIONADAS ================================
 
+SELECT id_empregado, nome, salario 
+FROM tb_empregado externa
+WHERE salario > (SELECT avg(salario)
+                 FROM tb_empregado interna
+                 WHERE externa.id_departamento = interna.id_departamento)
+                 
+    
+    
+--============= EXISTS e NOT EXISTS ====================
+
+-- verirfica se a condição da subconsulta é verdadeira ou falso se V retorna se F não retorna 
+--retorna todos funcionarios que gerenciam outros funcionarios
+SELECT id_empregado,nome, sobrenome
+FROM tb_empregado externa
+WHERE EXISTS (SELECT 1
+              FROM tb_empregado interna
+              WHERE externa.id_gerente = interna.id_empregado);
+              
+-- Retorna o funcionario que não gerenciado por ninguém              
+SELECT id_empregado,nome, sobrenome
+FROM tb_empregado externa
+WHERE NOT EXISTS (SELECT 1
+                  FROM tb_empregado interna
+                  WHERE externa.id_gerente= interna.id_empregado);
+ 
+ --Retorna as localizações que contem departamentos              
+SELECT id_localizacao  
+FROM tb_localizacao externa
+WHERE EXISTS (SELECT 1
+              FROM tb_departamento interna
+              WHERE externa.id_localizacao = interna.id_localizacao);
+-- Retorna Localizaçoes que não contem departamentos               
+SELECT id_localizacao  
+FROM tb_localizacao externa
+WHERE NOT EXISTS (SELECT 1
+              FROM tb_departamento interna
+              WHERE externa.id_localizacao = interna.id_localizacao);
 
