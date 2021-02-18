@@ -166,3 +166,65 @@ WHERE NOT EXISTS (SELECT 1
               FROM tb_departamento interna
               WHERE externa.id_localizacao = interna.id_localizacao);
 
+ --Retorna as localizações que contem departamentos              
+SELECT id_localizacao  
+FROM tb_localizacao externa
+WHERE EXISTS (SELECT 1
+              FROM tb_departamento interna
+              WHERE externa.id_localizacao = interna.id_localizacao);
+-- Retorna Localizaçoes que não contem departamentos               
+SELECT id_localizacao, cidade
+FROM tb_localizacao externa
+WHERE NOT EXISTS (SELECT 1
+              FROM tb_departamento interna
+              WHERE externa.id_localizacao = interna.id_localizacao)
+ORDER BY 1;              
+              
+              
+-- caso tenha uma valor nulo sendo retornado pela consulta interna  não retornara nada               
+SELECT id_localizacao, cidade
+FROM tb_localizacao 
+WHERE id_localizacao NOT IN (SELECT id_localizacao
+                            FROM tb_departamento )
+ORDER BY 1;   
+
+-- PARA SOLUÇÂO DESSE PROBLEMA UTILIZAR O NVL 
+
+SELECT id_localizacao
+FROM tb_localizacao 
+WHERE id_localizacao NOT IN (SELECT nvl(to_char(id_localizacao), 0)
+                              FROM tb_departamento)
+
+
+--Subconsultas aninhadas 
+SELECT id_departamento, avg(salario)
+FROM tb_empregado
+GROUP BY id_departamento 
+HAVING AVG(salario) < (SELECT MAX(AVG(salario))
+                       FROM tb_empregado
+                       WHERE id_departamento IN (SELECT id_departamento 
+                                                 FROM tb_departamento d
+                                                 WHERE EXISTS (SELECT 1
+                                                                   FROM tb_localizacao l
+                                                                   WHERE d.id_localizacao = l.id_localizacao)) 
+group by id_departamento)
+order by 1 ;
+                                                 
+
+SELECT *
+FROM tb_funcao;
+
+--SUBCONSULTAS UPDATE E DELETE 
+
+UPDATE tb_empregado
+    SET salario = (SELECT avg(teto_salario)
+                   FROM tb_funcao)
+WHERE id_empregado = 100;
+
+ROLLBACK;
+
+DELETE 
+FROM tb_empregado
+WHERE salario > (SELECT avg(teto_salario)
+                 FROM tb_funcao);
+                                  
