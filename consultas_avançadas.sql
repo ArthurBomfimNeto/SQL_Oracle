@@ -130,3 +130,47 @@ FROM tb_estagiarios
 INTERSECT
 SELECT id_empregado, id_departamento, nome
 FROM tb_alteracoes_empregado);
+
+---========== TRANSLATE(x, da_string, para_string) -=============
+
+-- encontra a string correposndente e substitui pela ultima
+
+SELECT TRANSLATE('ARTHUR BOMFIM',
+                 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+                  'EFGHIJKLMNOPQRSTUVWXYZABCD')
+FROM dual;         
+
+SELECT TRANSLATE (nome,
+        'ABCDEFGIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzw',
+         'EFGHIJKLMNOPQRSTUVWXYZABCDefghijklmnopqrstuvwxyzabcd')
+FROM tb_empregado; 
+
+--Pega os numero 12345 e converte 5 em 6, 4 em 7, 3 em 8, 2 em 9, 1 em 0
+
+SELECT TRANSLATE(12345,
+                 54321,
+                 67890)
+FROM dual;   
+
+--=========== DECODE(valor, valor_pesquisa, resultado, valor_padrão) ===========
+
+-- se o promeiro for igual a segundo retorna o terceiro se não retoena o quarto 
+SELECT DECODE(1,1,2,3)
+FROM dual;
+
+-- Como primeiro e diferente do segundo retornou o quarto. 
+SELECT DECODE(1,2,2,3)
+FROM dual;
+
+
+-- Verifica e o estagirio esta disponivel e retorna a mensgame equivalente
+
+SELECT id_empregado, disponivel, DECODE(disponivel, 'Y', 'Estagiario disponivel', 'NÂO DISPONIVEL')
+FROM tb_estagiarios;
+
+SELECT id_empregado, DECODE(id_empregado,
+                             206, 'WILIAM',
+                             205, 'SHELEY',
+                             202, 'PAT',
+                             201, 'MICHAEL','ERRerroO')
+FROM tb_estagiarios; 
