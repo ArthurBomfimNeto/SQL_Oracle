@@ -174,3 +174,38 @@ SELECT id_empregado, DECODE(id_empregado,
                              202, 'PAT',
                              201, 'MICHAEL','ERRerroO')
 FROM tb_estagiarios; 
+
+--===CASE()
+             
+       
+ SELECT id_empregado, id_departamento,
+         CASE id_empregado
+             WHEN 206 THEN 'WILIAM'
+             WHEN 205 THEN 'SHELEY'
+             WHEN 202 THEN 'PAT'
+             WHEN 201 THEN 'MICHAEL'
+             ELSE 'ERRerroO'
+         END    
+FROM tb_estagiarios; 
+
+-- CASE de FORMA DIFERENTE 
+SELECT id_empregado, id_departamento,
+   CASE 
+      WHEN id_empregado = 206 THEN 'WILIAM'
+      WHEN id_empregado = 205 THEN 'SHEYLEY'
+      WHEN id_empregado = 202 THEN 'PAT'
+      WHEN id_empregado = 201 THEN 'MICHEL'
+      ELSE 'Faill'
+   END
+FROM tb_estagiarios;   
+             
+       
+       
+       
+SELECT id_empregado, nome, salario, 
+        CASE 
+           WHEN salario > 12000 THEN 'RICO'
+           WHEN (salario > 3000 AND salario < 12000) THEN 'MEDIO'
+           ELSE 'POBRE'
+        END
+FROM tb_empregado;   
