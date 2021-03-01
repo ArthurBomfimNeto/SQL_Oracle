@@ -209,3 +209,28 @@ SELECT id_empregado, nome, salario,
            ELSE 'POBRE'
         END
 FROM tb_empregado;   
+
+--=============== Consultas HIERAQUICAS =============
+
+-- MESMO RESULTADO DE FORMA DIFERENTE
+SELECT e.id_empregado, e.id_gerente, e.nome || ' trabalha para ' || nvl(g.nome, 'Os acionistas')
+FROM tb_empregado e
+LEFT OUTER JOIN tb_empregado g ON (g.id_empregado = e.id_gerente)
+ORDER BY 1;
+
+
+--SEM UTILIZAÇÂO DO LEVEL apenas descobrindo os gerente e seus respectivos funcionarios 
+
+SELECT id_empregado, id_gerente, nome,sobrenome
+FROM tb_empregado
+START WITH id_empregado =100
+CONNECT BY PRIOR id_empregado = id_gerente
+ORDER BY 1;
+
+--UTILIZANDO O LEVEL 
+
+SELECT LEVEL, id_empregado, id_gerente, nome, sobrenome 
+FROM tb_empregado
+START WITH id_empregado = 100
+CONNECT BY PRIOR id_empregado = id_gerente
+ORDER BY LEVEL;
