@@ -599,6 +599,433 @@ BEGIN
   &id_departamento);
 END;  
 
-UNDEFINE id_departamento; -- para inibir o erro de guardar as variaveis 
+UNDEFINE id_departamento; -- para inibir o erro de guardar as variaveis ´
+
+
+--=========CONDIÇÂO IF ===============
+
+SET serveroutput ON
+DECLARE
+  v_a NUMBER(2) := 10;
+BEGIN
+ v_a := 10;
+ --verifica a condição boolean usando a instrução IF
+ 
+ IF (v_a <20) THEN  -- se a condição for verdadeira
+   dbms_output.put_line('v_a eh menor que 20');
+   
+ END IF;
+ DBMS_OUTPUT.PUT_LINE('O valor de v_a eh: ' || v_a);
+END;
+
+
+-- UTILIZANDO TABELA DO ESQUEMA DO BD
+
+SET serveroutput ON
+DECLARE 
+  v_contador  NUMBER;
+BEGIN 
+  SELECT COUNT(1) INTO v_contador
+  FROM tb_empregado;
+  
+  IF v_contador = 0 THEN
+    dbms_output.put_line('Não existem empregados cadastrados');
+  END IF;
+END;  
+
+CREATE TABLE tb_clientes(
+id_cliente    INT NOT NULL, 
+nm_cliente    VARCHAR2(20) NOT NULL, 
+idade         INT NOT NULL, 
+endereco      VARCHAR2(25), 
+salario       DECIMAL (18,2), 
+PRIMARY KEY (id_cliente)
+);
+
+INSERT INTO tb_clientes (id_cliente, nm_cliente, idade, endereco, salario) 
+VALUES (1, 'Ramesh', 32, 'Ahmedabad', 2000.00 ); 
+
+INSERT INTO tb_clientes (id_cliente, nm_cliente, idade, endereco, salario) 
+VALUES (2, 'Khilan', 25, 'Delhi', 1500.00 ); 
+
+INSERT INTO tb_clientes (id_cliente, nm_cliente, idade, endereco, salario)  
+VALUES (3, 'kaushik', 23, 'Kota', 2000.00 ); 
+
+INSERT INTO tb_clientes (id_cliente, nm_cliente, idade, endereco, salario) 
+VALUES (4, 'Chaitali', 25, 'Mumbai', 6500.00 ); 
+
+INSERT INTO tb_clientes (id_cliente, nm_cliente, idade, endereco, salario)  
+VALUES (5, 'Hardik', 27, 'Bhopal', 8500.00 ); 
+
+INSERT INTO tb_clientes (id_cliente, nm_cliente, idade, endereco, salario) 
+VALUES (6, 'Komal', 22, 'MP', 4500.00 );
+
+COMMIT;
+
+
+--- UPDATE USANDO IF
+SET severoutput ON
+
+DECLARE
+  c_id_cliente           tb_clientes.id_cliente%TYPE := 1;
+  c_salario              tb_clientes.salario%TYPE; 
+  
+BEGIN 
+  SELECT salario into c_salario
+  FROM tb_clientes
+  WHERE id_cliente = c_id_cliente;
+  
+  IF (c_salario <= 2000) THEN
+     UPDATE tb_clientes SET salario = salario + 1000
+     WHERE id_cliente = c_id_cliente;
+     dbms_output.put_line('Slario alterado com êxito');
+     COMMIT;
+  END IF;
+END;  
+
+---- ==IF THEN ELSE
+
+SET serveroutput ON
+DECLARE
+   v_a    NUMBER(3) := 100;
+BEGIN
+  IF(v_a<20) THEN
+     dbms_output.put_line('v_a eh menor que 20');
+  ELSE
+     dbms_output.put_line('v_a não eh menor que 20');
+  END IF;
+     dbms_output.put_line('O valor de v_a eh: ' || v_a);
+END;
+
+
+---OUTRO EXEMPLO 
+
+SET serveroutput ON
+DECLARE
+   v_contador   NUMBER;
+BEGIN 
+   SELECT COUNT(1) INTO v_contador
+   FROM tb_empregado;
+   
+ IF v_contador = 0 THEN
+   dbms_output.put_line('Não existem empregados cadastrados');
+ ELSE
+   dbms_output.put_line('Existem' || TO_CHAR(v_contador) || ' empregados cadastrados');
+   
+ END IF;
+END; 
+
+
+----- IF THEN ELSIF ----------
+
+SET serveroutput ON
+
+DECLARE 
+  v_a   NUMBER(3) := 100;
+BEGIN 
+  IF(v_a =10) THEN 
+    dbms_output.put_line('Valores de v_a eh 10');
+  ELSIF (v_a = 20) THEN
+    dbms_output.put_line('Valor de v_a eh 20');
+  ELSIF (v_a = 30)  THEN
+    dbms_output.put_line('Valor de v_a eh 30');
+  ELSE
+    dbms_output.put_line('Nenhuma correspondencia com os valores acima');
+  END IF;
+  dbms_output.put_line('O valor exato de v_a eh:' || v_a);
+END;  
+
+SET serveroutput ON
+DECLARE
+  v_contador NUMBER;
+BEGIN
+  SELECT COUNT(1) INTO v_contador
+  FROM tb_empregado;
+  
+  IF v_contador = 0 THEN
+    dbms_output.put_line('Não existe empregado cadastrado');
+  ELSIF v_contador > 100 THEN
+    dbms_output.put_line('Existem mais de 100 empregados cdastrados');
+  ELSE
+    dbms_output.put_line('Exitem ' || TO_CHAR(v_contador) || ' empregados cadastrados');
+  END IF;
+END;  
+  
+  
+-- ======CASE============
+
+SET serveroutput ON 
+DECLARE 
+  v_grade   CHAR(1) := 'A';
+BEGIN
+
+ CASE v_grade
+       WHEN 'A' THEN dbms_output.put_line('Excelente');
+       WHEN 'B' THEN dbms_output.put_line('Muito bom');
+       WHEN 'C' THEN dbms_output.put_line('Bom');
+       WHEN 'D' THEN dbms_output.put_line('Reprovado');
+       WHEN 'F' THEN dbms_output.put_line('Tente novamente');
+  ELSE dbms_output.put_line('Nenhuma classificação');
+  END CASE;
+END;  
+
+
+--===== SEGUNDo EXEMPLO ======
+
+SET serveroutput ON
+DECLARE
+  v_contador          NUMBER;
+  v_msg               VARCHAR2(100);
+BEGIN 
+   SELECT COUNT(1) INTO v_contador
+   FROM tb_empregado;
+   
+   CASE v_contador
+      WHEN 0 THEN dbms_output.put_line('Nenhum empregado cadastrado');
+   ELSE dbms_output.put_line('Existem ' || TO_CHAR(v_contador) || ' empregados cadastrados');
+   END CASE;
+END;   
+  
+
+--=============== CASE com seletor no WHEN ===========
+
+SET serveroutput ON 
+DECLARE 
+  v_grade   CHAR(1) := 'B';
+BEGIN
+ CASE 
+       WHEN v_grade = 'A' THEN dbms_output.put_line('Excelente');
+       WHEN v_grade = 'B' THEN dbms_output.put_line('Muito bom');
+       WHEN v_grade = 'C' THEN dbms_output.put_line('Bom');
+       WHEN v_grade = 'D' THEN dbms_output.put_line('Reprovado');
+       WHEN v_grade = 'F' THEN dbms_output.put_line('Tente novamente');
+  ELSE dbms_output.put_line('Nenhuma classificação');
+  END CASE;
+END;  
+
+--USO DA VARIVEL COM RETORNO DO CASE 
+
+SET serveroutput ON
+DECLARE
+  v_contador    NUMBER;
+  v_msg         VARCHAR2(100);
+BEGIN 
+  SELECT COUNT(1) INTO v_contador
+  FROM tb_empregado;
+  
+  v_msg := CASE
+           WHEN v_contador = 0 THEN 'Nenhum empregado cadastrado' 
+           WHEN v_contador > 100 THEN 'Existem mais de 100 empregado cadastrado'
+           ELSE 'Existem ' || TO_CHAR(v_contador) || ' empregados cadastrados'
+           END;
+     dbms_output.put_line(v_msg);
+END;     
+
+--EXIBE DE FORMA HORIZONTAL 
+
+SELECT COUNT(CASE WHEN salario < 2000 THEN 1 ELSE NULL END) contador_1,
+       COUNT(CASE WHEN salario BETWEEN 2001 AND 4000 THEN 1 ELSE NULL END) contador_2,
+       COUNT(CASE WHEN salario > 4000 THEN 1 ELSE NULL END) contador_3
+FROM tb_empregado;  
+
+--EXIBE DE FORMA VERTICAL 
+
+SELECT COUNT(1)
+FROM tb_empregado
+WHERE salario < 2000
+UNION ALL
+SELECT COUNT(1)
+FROM tb_empregado
+WHERE salario BETWEEN 2001 AND 4000
+UNION ALL
+SELECT COUNT(1)
+FROM tb_empregado
+WHERE salario> 4000;
+
+
+-- IF ANINHADOS 
+
+SET serveroutput ON
+
+DECLARE 
+ v_a    NUMBER(3) := 100;
+ v_b    NUMBER(3) := 200;
+BEGIN 
+  IF(v_a = 100) THEN 
+    IF(v_b = 200) THEN
+      dbms_output.put_line('Valor de v_a eh 100 e v_b eh 200');
+    END IF;
+  END IF;
+  dbms_output.put_line('Valor exato de v_a eh : ' || v_a);
+  dbms_output.put_line('Valor exato de v_b eh: ' || v_b);
+END;  
+
+--==================== LOOPS ==============================================
+
+--LOOP BASICO
+
+SET serveroutput ON
+DECLARE
+  v_x     NUMBER := 10;
+BEGIN 
+  LOOP
+   dbms_output.put_line(v_x);
+   
+   v_x := v_x + 10;
+   IF v_x > 50 THEN
+     EXIT;
+   END IF;
+  END LOOP;
+  dbms_output.put_line('Depois do Exit v_x eh: ' ||v_x);
+END;
+
+-- LOOP BASICO COM EXIT WHEN; (Parar Quando)
+
+SET serveroutput ON
+DECLARE 
+  v_x  number := 10;
+BEGIN 
+  LOOP 
+  dbms_output.put_line(v_x);
+  v_x := v_x + 10;
+  EXIT WHEN v_x > 50;
+ END LOOP;
+dbms_output.put_line('Depois do Exit v_x eh: ' ||v_x);
+END;
+
+--========== WHILE ============
+
+SET serveroutput ON 
+DECLARE
+  v_a   NUMBER(2) := 10;
+BEGIN
+  WHILE v_a < 20 LOOP
+   dbms_output.put_line('Valor de v_a: ' || v_a);
+   v_a := v_a + 1;
+  END LOOP;
+END; 
+
+--============= FOR x IN 100..20 LOOP=========
+
+SET serveroutput ON
+DECLARE 
+  v_a NUMBER(2);
+BEGIN
+  FOR v_a IN 10..20 LOOP
+   dbms_output.put_line( 'Valor de v_a: ' || v_a);
+ END LOOP;
+END; 
+
+SET serveroutput ON
+
+DECLARE
+  v_contador   NUMBER :=0;
+BEGIN
+  FOR i IN 1..100 LOOP
+    v_contador := v_contador + 1;
+    dbms_output.put_line(i);
+  END LOOP;
+  
+  dbms_output.put_line('O valor final do v_contador eh: ' || v_contador);
+END;
+
+
+--=========== FOR LOOP REVERSE faz de forma contraria ======================
+SET serveroutput ON 
+DECLARE 
+  v_a  NUMBER(2);
+BEGIN 
+  FOR v_a IN REVERSE 10..20 LOOP
+    dbms_output.put_line('Valor de v_a: ' || v_a);
+  END LOOP;
+END;  
+
+
+--======== LOOP ANINHADO ========
+
+SEt serveroutput ON
+DECLARE 
+  v_contador        NUMBER := 1;
+BEGIN
+  <<loop_filho>>
+ 
+ 
+SET serveroutput ON
+
+DECLARE
+  v_a   NUMBER(2) := 10;
+BEGIN
+   WHILE  v_a < 20 LOOP
+     dbms_output.put_line('Valor de v_a: ' || v_a);
+     v_a := v_a + 1;
+     IF v_a > 15 THEn
+      EXIT;
+     END IF;
+    END LOOP;
+ END;  
+ 
+
+SET serveroutput ON 
+DECLARE
+  v_a NUMBER(2) := 10;
+BEGIN
+  WHILE v_a < 20 LOOP
+    dbms_output.put_line('Valor de v_a: ' || v_a);
+    v_a := v_a +1;
+    
+    EXIT WHEN v_a >15;
+    END LOOP;
+END;    
+
+
+--=========== CONTINUE força a próxima iteração do LOOP ==============
+
+SET serveroutput ON
+DECLARE 
+  v_a NUMBER(2) := 10;
+BEGIN
+   WHILE v_a < 20 LOOP
+     dbms_output.put_line('Valor de v_a: ' || v_a);
+     v_a := v_a + 1;
+     IF v_a = 15 THEN
+       v_a := v_a +1;
+      -- CONTINUE;
+     END IF;
+   END LOOP;
+END;  
+
+
+--============ GOTO ========== não é muito legal * NÂO ACONSELHADO 
+
+SET serveroutput ON
+DECLARE
+  v_a   NUMBER(2) := 10;
+BEGIN 
+   <<inicio_loop>>
+   WHILE v_a < 20 LOOP
+  dbms_output.put_line('Valor de v_a eh: ' || v_a);
+  v_a := v_a + 1;
+  IF v_a = 15 THEN
+    v_a :=v_a + 1;
+    GOTO inicio_loop;
+  END IF;
+ END LOOP;
+END; 
+
+SET serveroutput ON
+DECLARE 
+  v_resultado  BOOLEAN;
+  v_compare1   BOOLEAN;
+  v_compare2   BOOLEAN;
+BEGIN
+  v_compare1 := true;
+  v_compare2 := true;
+  v_resultado := v_compare1 AND v_compare2;
+  dbms_output.put_line('O valor de v_resultado é: ' || 
+                       CASE v_resultado WHEN TRUE THEN 'TRUE' WHEN FALSE
+                      THEN 'FALSE' ELSE 'NULL' END);
+END;                      
+
+
 
 
